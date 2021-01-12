@@ -53,7 +53,7 @@ export const getHotSingerList = () => {
 export const refreshMoreHotSingerList = () => {
   return (dispatch, getState) => {
     const pageCount = getState().getIn(['singers', 'pageCount']);
-    const singerList = getState().getIn(['singers', 'singerList']).toJS();
+    const singerList = getState().getIn(['singers', 'singerList']) && getState().getIn(['singers', 'singerList']).toJS();
     getHotSingerListRequest(pageCount).then(res => {
       const data = [...singerList, ...res.artists];
       dispatch(changeSingerList(data));

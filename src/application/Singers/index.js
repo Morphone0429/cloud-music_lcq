@@ -43,11 +43,9 @@ const renderSingerList = () => {
 
 
 function Singers(props) {
-
   let [category, setCategory] = useState('')
   let [alpha, setAlpha] = useState('')
-  const { updateDispatch } = props
-  console.log(props);
+  const { updateDispatch, pageCount, pullDownLoading, pullUpLoading, pullDownRefreshDispatch, pullUpRefreshDispatch } = props
   let handleUpdateAlpha = val => {
     setAlpha(val)
     updateDispatch(category, val);
@@ -55,6 +53,13 @@ function Singers(props) {
   let handleUpdateCategory = val => {
     setCategory(val)
     updateDispatch(val, alpha);
+  }
+
+  const handlePullUp = () => {
+    pullUpRefreshDispatch(category, alpha, category === '', pageCount)
+  }
+  const handlePullDown = () => {
+    pullDownRefreshDispatch(category, alpha)
   }
 
   useEffect(() => {
@@ -70,7 +75,7 @@ function Singers(props) {
         <Horizen list={alphaTypes} title={"首字母:"} handleClick={val => handleUpdateAlpha(val)} oldVal={alpha}></Horizen>
       </NavContainer>
       <ListContainer>
-        <Scroll>
+        <Scroll pullUp={handlePullUp} pullDown={handlePullDown} pullDownLoading={pullDownLoading} pullUpLoading={pullUpLoading}>
           {renderSingerList()}
         </Scroll>
       </ListContainer>
